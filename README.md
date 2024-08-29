@@ -1,157 +1,101 @@
-# Datta Able React Free Admin Template [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Download%20Datta%20Able%20-%20The%20professional%20Bootstrap%20designed%20React%20Admin%20Dashboard%20Template%20&url=https://codedthemes.com/demos/admin-templates/datta-able/react/default&via=codedthemes&hashtags=reactjs,webdev,developers,javascript)
+# TailAdmin React - Free React Tailwind Admin Dashboard Template
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Price](https://img.shields.io/badge/price-FREE-0098f7.svg)](https://github.com/codedthemes/datta-able-free-react-admin-template/blob/main/LICENSE)
-[![GitHub package version](https://img.shields.io/github/package-json/v/codedthemes/datta-able-free-react-admin-template)](https://github.com/codedthemes/datta-able-free-react-admin-template)
+TailAdmin is a free and open-source admin dashboard template built on **React and Tailwind CSS**, providing developers with everything they need to create a comprehensive, data-driven back-end, 
+dashboard, or admin panel solution for upcoming web projects.
 
-Datta Able React Free Admin Template comes with variety of components like Button, Badges, Tabs, Breadcrumb, Icons, Form elements, Table, Charts & Authentication pages.
+[![tailwind react admin template](https://ucarecdn.com/d2a6daed-eb9c-4c2f-8a95-4419c450e23a/tailadminreact.jpg)](https://react-demo.tailadmin.com/)
 
-The code structure is high flexible to use and modify.
 
-Its design adapt any screen size easily even if retina screens.
+With TailAdmin, you get access to all the necessary dashboard UI components, elements, and pages required to build a feature-rich and complete dashboard or admin panel. Whether you're building dashboard or admin panel for a complex web application or a simple website, TailAdmin is the perfect solution to help you get up and running quickly.
 
-It is modern concept dashboard design with eye catchy colors. Wish you happy to use our product in your project.
+### [✨ Visit Website](https://tailadmin.com/)
 
-:star: :star: :star: Support us by giving star (Top right of this page) if you like the theme :star: :star: :star:
+### [🚀 PRO Demo](https://react-demo.tailadmin.com/)
+### [🚀 FREE Demo](https://free-react-demo.tailadmin.com/)
 
-![Datta Able React Free Admin Template Preview Image](https://org-public-assets.s3.us-west-2.amazonaws.com/Free-Version-Banners/GITHUB-FREE-REACT-REPO%20-%20Datta%20able.jpg)
+### TailAdmin React PRO vs TailAdmin React FREE Comparison 📊
 
-The [Pro version](https://codedthemes.com/demos/admin-templates/datta-able/react/default) of Datta able react template includes features such as TypeScript, apps, authentication methods (i.e. JWT, Auth0, Firebase), advance components, form plugins, layouts, widgets, and more.
+#### [TailAdmin React PRO](https://react-demo.tailadmin.com/)
+- 5 Unique Dashboards: Analytics, Ecommerce, Marketing, and CRM (More will be added)
+- 120+ Dashboard UI Components
+- 200+ Total UI Elements
+- 45+ HTML Files
+- All Essential Elements and Files
+- Full Figma Design Source - As Shown on Demo
 
-| [Datta Able Free](https://codedthemes.com/demos/admin-templates/datta-able/react/free) | [Datta able Pro](https://codedthemes.com/demos/admin-templates/datta-able/react/default)                |
-| -------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ |
-| **7+** Demo pages                                                                      | **85+** Demo pages                                                                                      |
-| -                                                                                      | ✓ Multi-Layout                                                                                          |
-| -                                                                                      | ✓ Dark/Light Mode 🌓                                                                                    |
-| -                                                                                      | ✓ TypeScript version                                                                                    |
-| -                                                                                      | ✓ Multiple color options                                                                                |
-| -                                                                                      | ✓ RTL                                                                                                   |
-| -                                                                                      | ✓ JWT, Firebase, Auth0, AWS authentication                                                              |
-| -                                                                                      | ✓ [More components](https://codedthemes.com/demos/admin-templates/datta-able/react/default/basic/alert) |
-| ✓ MIT License                                                                          | ✓ [Pro License](https://codedthemes.com/item/datta-able-react-admin-template/)                          |
+___
 
-## Why Datta Able?
+#### [TailAdmin React FREE](https://free-react-demo.tailadmin.com/)
+- 1 Unique Dashboard
+- 30+ Dashboard UI Components
+- 50+ Total UI Elements 
+- 10+ HTML Files
+- TypeScript Support
+- Basic UI Kit Elements and Files
+- Figma Design Source - Free Sample
+___
 
-Datta Able offers everything needed to build an advanced dashboard application. In the initial release, we included following high-end features,
+### [⬇️ Download Now](https://tailadmin.com/download)
 
-- Support React18.
-- Professional user interface.
-- Bootstrap React components.
-- Fully responsive, all modern browser supported.
-- Easy to use code structure
-- Flexible & high-Performance code
-- Simple documentation
+### [⚡ Get PRO Version](https://tailadmin.com/pricing)
 
-## Free Datta Able React version
+### [📄 Documentation/Installation](https://tailadmin.com/docs)
 
-#### Preview
+### [🖌️ TailAdmin Figma Free Sample](https://www.figma.com/community/file/1214477970819985778)
 
-- [Demo](https://codedthemes.com/demos/admin-templates/datta-able/react/free)
+### [👉 TailAdmin HTML Version](https://github.com/TailAdmin/tailadmin-free-tailwind-dashboard-template)
 
-#### Download
+TailAdmin React dashboard template based on Tailwind CSS is a pre-designed starting point for building a web-based dashboard using the React JavaScript library and the Tailwind CSS utility-first framework. This Tailwind CSS + React Dashboard Template - built using Tailwind CSS and **includes pre-built components, such as navigation menus, charts, tables, and forms, which can be easily customized and integrated into a small-to-large React web application**.
 
-- [Download from GitHub](https://github.com/codedthemes/datta-able-free-react-admin-template)
+If you're looking for a high-quality **React-Tailwind Dashboard, Admin Panel Template, or UI Kit**, TailAdmin will be the perfect choice for you!
 
-## Datta Able Pro version
+## TailAdmin React - Installation
 
-#### Preview
+You'll need to install Node.js >=v14.16+ (Recommended Version) (NPM comes along with it) and TailAdmin uses **Vite** for frontend tooling, to peform installation and building production version, please follow these steps from below:
 
-- [Demo](https://codedthemes.com/demos/admin-templates/datta-able/react/default)
+- Use terminal and navigate to the project (tailadmin-react) root.
 
-#### Purchase
+- Then run : <code>npm install</code>
 
-- [Buy now](https://codedthemes.com/item/datta-able-react-admin-template/)
+- Then run : <code>npm run dev</code>
 
-## Premium Version Preview & Download
+Now, in the browser go to <code>localhost:5173</code>
 
-Datta Able Pro Admin Template is available to purchase. Visit its numerous demos and make your purchase decision.
+**For Production Build**
+Run : <code>npm run build</code>
 
-#### Preview
+Default build output directory: /dist
 
-- [Demo](https://codedthemes.com/demos/admin-templates/datta-able/react/default/dashboard/default)
+This command will generate a dist as build folder in the root of your template that you can upload to your server.
 
-#### Download
+## Tons of React Tailwind Components for Dashboard
+React and Tailwind are two popular technologies that have taken the web development world by storm. React is a JavaScript library for building user interfaces, while Tailwind is a utility-first CSS framework that makes it easy to style web applications. TailAdmin React Offers 200+ Essential React + Tailwind CSS UI Components that you copy-paste and use with your dashboard projects. That includes - charts, graphs, navbars, tabs, buttons, cards, tables, profile, tabs, forms, modals, app pages, calender, web apps example templates and more... for React and Styled using Tailwind CSS
 
-- [Purchase from CodedThemes](https://codedthemes.com/item/datta-able-react-admin-template/)
 
-## Table of contents
 
-- [Getting started](#getting-started)
-- [Documentation](#documentation)
-- [Technology stack](#technology-stack)
-- [Author](#author)
-- [Issues?](#issues)
-- [License](#license)
-- [More Free React Templates](#more-free-react-material-admin-dashboard-templates)
-- [More Pro React Templates](#more-premium-react-material-admin-dashboard-templates)
-- [Follow us](#follow-us)
+## Update Logs
 
-## Getting Started
+### Version 1.3.7 - [June 20, 2024]
 
-1. Clone from Github
+#### Enhancements
 
-```
-git clone https://github.com/codedthemes/datta-able-bootstrap-dashboard.git
-```
+- **Enhancement 01:** Remove Repetition of DefaultLayout in every Pages
+- **Enhancement 02:** Add ClickOutside Component for reduce repeated functionality in Header Message, Notification and User Dropdowns.
 
-2. Install packages
+### Version 1.3.6 - [Jan 31, 2024]
 
-```
-yarn
-```
+#### Enhancements
 
-3. Run project
+- **Enhancement 01:** Integrate flatpickr in [Date Picker/Form Elements]
+- **Enhancement 02:** Change color after select an option [Select Element/Form Elements].
+- **Enhancement 03:** Make it functional [Multiselect Dropdown/Form Elements].
+- **Enhancement 04:** Make best value editable [Pricing Table One/Pricing Table].
+- **Enhancement 05:** Rearrange Folder structure.
 
-```
-yarn start
-```
+### Version 1.2.0 - [Apr 28, 2023]
 
-## Documentation
+- Add Typescript in TailAdmin React.
 
-[Datta Able documentation](https://codedthemes.com/demos/admin-templates/datta-able/react/docs/) helps you out in all aspects from Installation to deployment.
+### Version 1.0.0 - Initial Release - [Mar 13, 2023]
 
-## Technology stack
-
-- [Bootstrap V5](https://react-bootstrap.netlify.app/)
-- Built with React Hooks API.
-- Redux & React context API for state management.
-- Redux toolkit.
-- React Router for navigation routing.
-- Support for vite.
-- Code splitting.
-- CSS-in-JS.
-
-## Author
-
-Datta Able is managed by team [CodedThemes](https://codedthemes.com).
-
-## Issues
-
-Please generate a [GitHub issue](https://github.com/codedthemes/datta-able-free-react-admin-template/issues) if you found a bug in any version. We are try our best to resolve the issue.
-
-## License
-
-- Licensed under [MIT](https://github.com/codedthemes/datta-able-bootstrap-dashboard/blob/master/LICENSE)
-
-## More Free React Material Admin Dashboard Templates
-
-- [Free Mantis](https://github.com/codedthemes/mantis-free-react-admin-template)
-- [Free Materially](https://codedthemes.com/item/materially-free-reactjs-admin-template/)
-- [Free Berry](https://mui.com/store/items/berry-react-material-admin-free/)
-- [Free Gradient](https://github.com/codedthemes/gradient-able-free-admin-template/tree/main/react)
-
-## More premium React Material Admin Dashboard Templates
-
-- [Mantis](https://codedthemes.com/item/mantis-mui-react-dashboard-template/)
-- [Materially](https://codedthemes.com/item/materially-reactjs-admin-dashboard/)
-- [Berry](https://mui.com/store/items/berry-react-material-admin/)
-- [Gradient](https://codedthemes.com/item/gradient-able-reactjs-admin-dashboard/)
-
-## Follow us
-
-- Website [https://codedthemes.com/demos/admin-templates/datta-able/react/default/dashboard/default](https://codedthemes.com/demos/admin-templates/datta-able/react/default/dashboard/default)
-- Blog [https://blog.codedthemes.com/](https://blog.codedthemes.com/)
-- CodedThemes [https://codedthemes.com](https://codedthemes.com)
-- Dribbble [https://dribbble.com/codedthemes](https://dribbble.com/codedthemes)
-- Facebook [https://www.facebook.com/codedthemes](https://www.facebook.com/codedthemes)
-- Twitter [https://twitter.com/codedthemes](https://twitter.com/codedthemes)
+- Initial release of TailAdmin React.
