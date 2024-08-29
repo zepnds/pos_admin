@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Business } from '../types/merchant';
 
 type InitialState = {
-  business: Array<any>;
+  business: Array<Business>;
 };
 
 interface Response {
-  merchants: Array<any>;
+  merchants: Array<Business>;
 }
 
 interface ResponseErr {

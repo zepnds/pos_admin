@@ -8,6 +8,7 @@ import { getBusiness } from '../store/merchatSlice';
 const Merchant = () => {
   const dispatch = useDispatch<AppDispatch>();
   const auth = useAppSelector((state) => state.auth);
+  const merchants = useAppSelector((state) => state.merchant);
 
   useEffect(() => {
     dispatch(getBusiness({ id: auth.id, token: auth.access_token }))
@@ -18,7 +19,7 @@ const Merchant = () => {
     <div>
       <Breadcrumb pageName="Business List" />
       <div className="flex flex-col gap-10">
-        <TableThree />
+        <TableThree business={merchants.business} />
       </div>
     </div>
   );
