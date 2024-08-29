@@ -1,71 +1,91 @@
-import React from 'react';
-import { Row, Col, Alert, Button } from 'react-bootstrap';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Button, Spinner } from 'react-bootstrap';
+import { authError, updateAuth, usePostLoginUserMutation } from 'store/auth.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Input from 'components/input';
+import { loginSchema } from 'validation/schema';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const JWTLogin = () => {
+  const { handleSubmit, control } = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: ''
+    }
+  });
+  const [loading, setLoading] = useState(false);
+  const auth = useSelector((state) => state.auth);
+  const [reqLogin, { data, isError, isLoading, isSuccess, error }] = usePostLoginUserMutation();
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isError) {
+      setLoading(false);
+      if (error?.status === 403) {
+        dispatch(authError({ err: true, errMsg: 'Invalid access' }));
+      }
+    }
+  }, [isError, error, dispatch]);
+  useEffect(() => {
+    if (isLoading) {
+      setLoading(true);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      const _user = {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        csrf: data.csrf,
+        email: data.email,
+        role: data.role,
+        id: data.id
+      };
+
+      localStorage.setItem('access', JSON.stringify(_user));
+
+      dispatch(updateAuth(_user));
+      navigation('/app/dashboard/default');
+    }
+  }, [isSuccess, data, dispatch, navigation]);
+
+  const onSubmit = (data) => {
+    reqLogin(data);
+  };
+
   return (
-    <Formik
-      initialValues={{
-        email: 'info@codedthemes.com',
-        password: '123456',
-        submit: null
-      }}
-      validationSchema={Yup.object().shape({
-        email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-        password: Yup.string().max(255).required('Password is required')
-      })}
-    >
-      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-        <form noValidate onSubmit={handleSubmit}>
-          <div className="form-group mb-3">
-            <input
-              className="form-control"
-              label="Email Address / Username"
-              name="email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="email"
-              value={values.email}
-            />
-            {touched.email && errors.email && <small className="text-danger form-text">{errors.email}</small>}
-          </div>
-          <div className="form-group mb-4">
-            <input
-              className="form-control"
-              label="Password"
-              name="password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="password"
-              value={values.password}
-            />
-            {touched.password && errors.password && <small className="text-danger form-text">{errors.password}</small>}
-          </div>
+    <form noValidate onSubmit={handleSubmit(onSubmit)}>
+      {auth.err ? (
+        <div className="alert alert-danger" role="alert">
+          {auth.errMsg}
+        </div>
+      ) : null}
+      <div className="form-group mb-3">
+        <Input placeholder="Email" className="form-control" name="email" variant="default" control={control} />
+      </div>
+      <div className="form-group mb-4">
+        <Input placeholder="Password" className="form-control" control={control} name="password" variant="password" />
+      </div>
 
-          <div className="custom-control custom-checkbox  text-start mb-4 mt-2">
-            <input type="checkbox" className="custom-control-input mx-2" id="customCheck1" />
-            <label className="custom-control-label" htmlFor="customCheck1">
-              Save credentials.
-            </label>
-          </div>
-
-          {errors.submit && (
-            <Col sm={12}>
-              <Alert>{errors.submit}</Alert>
-            </Col>
-          )}
-
-          <Row>
-            <Col mt={2}>
-              <Button className="btn-block mb-4 w-100" color="primary" disabled={isSubmitting} size="large" type="submit" variant="primary">
-                Signin
-              </Button>
-            </Col>
-          </Row>
-        </form>
-      )}
-    </Formik>
+      <Row>
+        <Col mt={2}>
+          <Button className="btn-block mb-4 w-100 app-button" size="large" type="submit" variant="primary">
+            {loading ? (
+              <div className="loading-area">
+                <Spinner animation="border" />
+                <span>Signing in..</span>
+              </div>
+            ) : (
+              'Signin'
+            )}
+          </Button>
+        </Col>
+      </Row>
+    </form>
   );
 };
 

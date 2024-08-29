@@ -9,6 +9,8 @@ import useWindowSize from '../../hooks/useWindowSize';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import { ConfigContext } from '../../contexts/ConfigContext';
 import * as actionType from '../../store/actions';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLayout = ({ children }) => {
   const windowSize = useWindowSize();
@@ -39,6 +41,14 @@ const AdminLayout = ({ children }) => {
       dispatch({ type: actionType.COLLAPSE_MENU });
     }
   };
+
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (auth.status === 401) {
+      navigate('/auth/signin-1');
+    }
+  }, [navigate, auth.status]);
 
   let mainClass = ['pcoded-wrapper'];
 

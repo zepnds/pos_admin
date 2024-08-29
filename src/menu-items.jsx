@@ -22,16 +22,16 @@ const menuItems = {
       icon: 'icon-ui',
       children: [
         {
-          id: 'component',
-          title: 'Component',
+          id: 'merchant',
+          title: 'Merchant',
           type: 'collapse',
           icon: 'feather icon-box',
           children: [
             {
-              id: 'button',
-              title: 'Button',
+              id: 'list',
+              title: 'Business Management',
               type: 'item',
-              url: '/basic/button'
+              url: '/app/merchant'
             },
             {
               id: 'badges',

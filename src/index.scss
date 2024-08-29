@@ -36,6 +36,27 @@
 .main-search {
   padding: 16px 12px;
 }
+.loading-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.button-icon {
+  position: relative;
+  align-items: center;
+}
+.icon-size {
+  width: 29px;
+  height: 29px;
+  cursor: pointer;
+}
+
+.app-button {
+  background-color: #1dcae0;
+  border-color: #1dcae0;
+}
 
 @media only screen and (max-width: 991px) {
   .nav-outside {
