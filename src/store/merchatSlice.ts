@@ -3,6 +3,7 @@ import { Business } from '../types/merchant';
 
 type InitialState = {
   business: Array<Business>;
+  addBusiness: Record<string, string>;
 };
 
 interface Response {
@@ -47,12 +48,18 @@ export const getBusiness = createAsyncThunk<
 
 const initialState: InitialState = {
   business: [],
+  addBusiness: {},
 };
 
 const merchantSlice = createSlice({
   name: 'merchant',
   initialState,
-  reducers: {},
+  reducers: {
+    setBusiness: (state, action) => ({
+      ...state,
+      ...[action.payload],
+    }),
+  },
   extraReducers: (builder) => {
     builder.addCase(getBusiness.fulfilled, (state, { payload }) => {
       state.business = payload.merchants;
@@ -61,5 +68,5 @@ const merchantSlice = createSlice({
   },
 });
 
-export const {} = merchantSlice.actions;
+export const { setBusiness } = merchantSlice.actions;
 export default merchantSlice.reducer;
