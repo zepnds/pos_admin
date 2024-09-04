@@ -4,6 +4,7 @@ import BusinessDetailForm from '../../components/Forms/newbusiness/step1';
 import TimeLineDefault from '../../components/timeline/default';
 import { useAppDispatch, useAppSelector } from '../../store';
 import BusinessCategoryForm from '../../components/Forms/newbusiness/step2';
+import { setStep } from '../../store/appslice';
 
 const data: Array<{ id: number; title: string; description: string }> = [
   {
@@ -14,11 +15,6 @@ const data: Array<{ id: number; title: string; description: string }> = [
   {
     id: 2,
     title: 'Business Category',
-    description: 'Add Business category, Status and etc.',
-  },
-  {
-    id: 3,
-    title: 'Add Meta Details & Inventory',
     description: 'Add Business category, Status and etc.',
   },
 ];
@@ -46,9 +42,14 @@ function Form(formRef: ForwardedRef<{ submitForm: () => void }>) {
 export default function NewBusiness() {
   const step = useAppSelector((state) => state.app.step);
   const formRef = useRef<{ submitForm: () => void }>(null);
-
+  const dispatch = useAppDispatch();
   const handleNext = () => {
     formRef.current?.submitForm();
+  };
+
+  const handlePrevious = () => {
+    if (step === 1) return;
+    dispatch(setStep(step - 1));
   };
   return (
     <div>
@@ -57,14 +58,22 @@ export default function NewBusiness() {
         <TimeLineDefault data={data} active={step} />
         {Form(formRef)}
       </div>
-
-      <button
-        onClick={handleNext}
-        type="submit"
-        className="flex w-30 mt-5 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        Next
-      </button>
+      <div className="flex gap-5">
+        <button
+          onClick={handlePrevious}
+          type="submit"
+          className="flex w-30 mt-5 justify-center rounded-md bg-sky-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNext}
+          type="submit"
+          className="flex w-30 mt-5 justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
