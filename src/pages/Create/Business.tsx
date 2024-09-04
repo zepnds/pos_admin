@@ -1,6 +1,9 @@
+import { ForwardedRef, useRef } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import BusinessDetailForm from '../../components/Forms/newbusiness/step1';
 import TimeLineDefault from '../../components/timeline/default';
-import { useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
+import BusinessCategoryForm from '../../components/Forms/newbusiness/step2';
 
 const data: Array<{ id: number; title: string; description: string }> = [
   {
@@ -20,53 +23,43 @@ const data: Array<{ id: number; title: string; description: string }> = [
   },
 ];
 
+function Form(formRef: ForwardedRef<{ submitForm: () => void }>) {
+  const step = useAppSelector((state) => state.app.step);
+
+  switch (step) {
+    case 1: {
+      return (
+        <div className="w-full">
+          <BusinessDetailForm reference={formRef} />
+        </div>
+      );
+    }
+    case 2:
+      return (
+        <div className="w-full">
+          <BusinessCategoryForm reference={formRef} />
+        </div>
+      );
+  }
+}
+
 export default function NewBusiness() {
   const step = useAppSelector((state) => state.app.step);
+  const formRef = useRef<{ submitForm: () => void }>(null);
+
+  const handleNext = () => {
+    formRef.current?.submitForm();
+  };
   return (
     <div>
       <Breadcrumb pageName="New Business" />
       <div className="flex flex-nowrap gap-20">
         <TimeLineDefault data={data} active={step} />
-        <div className="w-full">
-          <form action="#" className="space-y-6 w-full">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Business Title
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Business Details
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-          </form>{' '}
-        </div>
+        {Form(formRef)}
       </div>
+
       <button
+        onClick={handleNext}
         type="submit"
         className="flex w-30 mt-5 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >

@@ -57,7 +57,7 @@ const merchantSlice = createSlice({
   reducers: {
     setBusiness: (state, action) => ({
       ...state,
-      ...[action.payload],
+      addBusiness: { ...state.addBusiness, ...action.payload },
     }),
   },
   extraReducers: (builder) => {
