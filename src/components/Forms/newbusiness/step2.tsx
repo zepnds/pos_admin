@@ -3,15 +3,20 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ForwardedRef, useImperativeHandle } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store';
-import { setStep } from '../../../store/appslice';
-import { setBusiness } from '../../../store/merchatSlice';
+import { createBusiness, setBusiness } from '../../../store/merchatSlice';
 import SelectInput from '../Input/Select';
+import TextInput from '../Input/TextInput';
 const businessDetails = yup.object().shape({
   category: yup.string().required('Business category is a required field'),
+  email: yup
+    .string()
+    .email('Please make sure input a valid email address')
+    .required('Business category is a required field'),
 });
 
 type IFormInput = {
   category: string;
+  email: string;
 };
 
 type Props = {
@@ -35,15 +40,19 @@ const businessCategoy: BusinessCategory = [
 ];
 
 export default function BusinessCategoryForm({ reference }: Props) {
+  const merchat = useAppSelector((state) => state.merchant);
+  const step = useAppSelector((state) => state.app.step);
+  const auth = useAppSelector((state) => state.auth);
   const { control, handleSubmit } = useForm<IFormInput>({
     defaultValues: {
-      category: '',
+      category: merchat.addBusiness.category ?? '',
+      email: merchat.addBusiness.email ?? '',
     },
     resolver: yupResolver(businessDetails),
   });
 
   const dispatch = useAppDispatch();
-  const step = useAppSelector((state) => state.app.step);
+
   useImperativeHandle(reference, () => ({
     submitForm() {
       handleSubmit(onSubmit)();
@@ -52,7 +61,17 @@ export default function BusinessCategoryForm({ reference }: Props) {
 
   const onSubmit = (data: IFormInput) => {
     dispatch(setBusiness(data));
-    dispatch(setStep(step + 1));
+    if (step === 2) {
+      const _payload = {
+        name: merchat.addBusiness.title,
+        merchant_address: merchat.addBusiness.address,
+        merchant_type: data.category.toLocaleUpperCase(),
+        merchant_email: data.email,
+        id: auth.id,
+        token: auth.access_token,
+      };
+      dispatch(createBusiness(_payload));
+    }
   };
 
   return (
@@ -76,6 +95,29 @@ export default function BusinessCategoryForm({ reference }: Props) {
               {errors?.category && (
                 <span className="text-red-800 block text-sm font-medium leading-6 text-gray-900 mb-2.5">
                   {errors.category.message}
+                </span>
+              )}
+            </>
+          )}
+        />
+        <Controller
+          name="email"
+          control={control}
+          render={({
+            field: { onChange, onBlur, value },
+            formState: { errors },
+          }) => (
+            <>
+              {' '}
+              <TextInput
+                name="Business Email"
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+              {errors?.email && (
+                <span className="text-red-800 block text-sm font-medium leading-6 text-gray-900 mb-2.5">
+                  {errors.email.message}
                 </span>
               )}
             </>

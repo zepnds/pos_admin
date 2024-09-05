@@ -45,7 +45,7 @@ const Merchant = () => {
         </button>
       </div>
       <div className="flex flex-col gap-10">
-        {merchants.business.length > 0 ? (
+        {merchants?.business?.length > 0 ? (
           <TableThree business={merchants.business} />
         ) : (
           <NotFound title="Business list" />

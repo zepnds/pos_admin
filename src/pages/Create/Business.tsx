@@ -41,8 +41,10 @@ function Form(formRef: ForwardedRef<{ submitForm: () => void }>) {
 
 export default function NewBusiness() {
   const step = useAppSelector((state) => state.app.step);
+  const addBusiness = useAppSelector((state) => state.merchant.addBusiness);
   const formRef = useRef<{ submitForm: () => void }>(null);
   const dispatch = useAppDispatch();
+  console.log('step', step);
   const handleNext = () => {
     formRef.current?.submitForm();
   };
@@ -73,6 +75,12 @@ export default function NewBusiness() {
         >
           Next
         </button>
+        {addBusiness.loading ? (
+          <div className="flex justify-center align-center">
+            <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24" />
+            <span>Processing...</span>
+          </div>
+        ) : null}
       </div>
     </div>
   );

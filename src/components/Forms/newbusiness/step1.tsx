@@ -8,12 +8,12 @@ import { setStep } from '../../../store/appslice';
 import { setBusiness } from '../../../store/merchatSlice';
 const businessDetails = yup.object().shape({
   title: yup.string().required('Business title is a required field'),
-  description: yup.string().required('Business details is a required field'),
+  address: yup.string().required('Business details is a required field'),
 });
 
 type IFormInput = {
   title: string;
-  description: string;
+  address: string;
 };
 
 type Props = {
@@ -21,10 +21,11 @@ type Props = {
 };
 
 export default function BusinessDetailForm({ reference }: Props) {
+  const merchant = useAppSelector((state) => state.merchant);
   const { control, handleSubmit } = useForm<IFormInput>({
     defaultValues: {
-      description: '',
-      title: '',
+      address: merchant.addBusiness.address ?? '',
+      title: merchant.addBusiness.title ?? '',
     },
     resolver: yupResolver(businessDetails),
   });
@@ -69,7 +70,7 @@ export default function BusinessDetailForm({ reference }: Props) {
           )}
         />
         <Controller
-          name="description"
+          name="address"
           control={control}
           render={({
             field: { onChange, onBlur, value },
@@ -77,7 +78,7 @@ export default function BusinessDetailForm({ reference }: Props) {
           }) => (
             <div>
               <label className="block text-sm font-medium leading-6 text-gray-900">
-                Business Details
+                Business Address
               </label>
               <div className="mt-2">
                 <textarea
@@ -88,9 +89,9 @@ export default function BusinessDetailForm({ reference }: Props) {
                   className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-              {errors?.description && (
+              {errors?.address && (
                 <span className="text-red-800 block text-sm font-medium leading-6 text-gray-900 mb-2.5">
-                  {errors.description.message}
+                  {errors.address.message}
                 </span>
               )}
             </div>
