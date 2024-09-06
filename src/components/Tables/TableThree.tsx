@@ -31,20 +31,20 @@ const TableThree = ({ business }: Props) => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    {packageItem.merchant_address}
+                    {packageItem.address}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                      packageItem.merchant_type === 'SERVICE'
+                      packageItem.type === 'SERVICE'
                         ? 'bg-success text-success'
-                        : packageItem.merchant_type === 'SALES'
+                        : packageItem.type === 'SALES'
                         ? 'bg-danger text-danger'
                         : 'bg-warning text-warning'
                     }`}
                   >
-                    {packageItem.merchant_type}
+                    {packageItem.type}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
