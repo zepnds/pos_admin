@@ -24,7 +24,7 @@ const Merchant = () => {
       <div className="mb-5">
         <button
           onClick={() => navigate('/dashboard/merchant/business/new')}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold font-bold py-2 px-4 rounded inline-flex items-center  gap-1"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold font-bold py-1 px-1.5 rounded inline-flex items-center  gap-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ const Merchant = () => {
             />
           </svg>
 
-          <span className="capitalize">create new</span>
+          <span className="capitalize text-sm">create new</span>
         </button>
       </div>
       <div className="flex flex-col gap-10">

@@ -338,7 +338,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Create New
+                              New Business
                             </NavLink>
                           </li>
                         </ul>

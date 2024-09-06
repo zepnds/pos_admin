@@ -13,7 +13,7 @@ interface Response {
 }
 
 interface ResponseErr {
-  errorMessage: string | undefined;
+  message: string | undefined;
 }
 
 interface GetMerchant {
@@ -82,10 +82,8 @@ const initialState: InitialState = {
     category: '',
   },
   createActions: {
-    loading: false,
-    error: false,
+    status: '',
     message: '',
-    success: false,
   },
 };
 
@@ -106,21 +104,18 @@ const merchantSlice = createSlice({
       })
       .addCase(createBusiness.fulfilled, (state, { payload }) => {
         state.business = payload.merchants;
-        state.createActions.loading = false;
-        state.createActions.success = true;
-        state.createActions.error = false;
+        state.createActions.status = 'success';
         state.createActions.message = payload.message;
         return state;
       })
       .addCase(createBusiness.pending, (state) => {
-        state.createActions.loading = true;
+        state.createActions.status = 'pending';
         return state;
       })
       .addCase(createBusiness.rejected, (state, { payload }) => {
-        state.createActions.loading = false;
-        state.createActions.error = true;
-        state.createActions.error = false;
-        state.createActions.message = payload?.errorMessage;
+        state.createActions.status = 'error';
+        console.log('payload', payload);
+        state.createActions.message = payload?.message;
         return state;
       });
   },

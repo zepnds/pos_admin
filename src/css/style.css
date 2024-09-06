@@ -117,7 +117,9 @@ span.flatpickr-weekday,
 }
 .flatpickr-day.inRange {
   @apply dark:!shadow-7;
-  box-shadow: -5px 0 0 #EFF4FB, 5px 0 0 #EFF4FB;
+  box-shadow:
+    -5px 0 0 #eff4fb,
+    5px 0 0 #eff4fb;
 }
 .flatpickr-day.inRange,
 .flatpickr-day.prevMonthDay.inRange,
@@ -212,4 +214,75 @@ span.flatpickr-weekday,
 
 [x-cloak] {
   display: none !important;
+}
+
+/**
+  * Waterfall
+  *
+  * @author jh3y
+*/
+@-webkit-keyframes waterfall {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-250%);
+    transform: translateY(-250%);
+  }
+  40%,
+  60% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(250%);
+    transform: translateY(250%);
+  }
+}
+@keyframes waterfall {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-250%);
+    transform: translateY(-250%);
+  }
+  40%,
+  60% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(250%);
+    transform: translateY(250%);
+  }
+}
+/**
+  * Arc
+  *
+  * @author jh3y - jheytompkins.com
+*/
+.arc:before {
+  -webkit-animation: spin 0.5s infinite linear;
+  animation: spin 0.5s infinite linear;
+  border-radius: 100%;
+  border-top: 6px solid var(--primary, #575656);
+  content: '';
+  display: block;
+  height: 30px;
+  width: 30px;
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
