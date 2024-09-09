@@ -14,6 +14,7 @@
     "url": "https://tailadmin.com"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "^2.2.7",
     "apexcharts": "^3.41.0",

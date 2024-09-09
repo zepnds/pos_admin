@@ -3,9 +3,12 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import TableThree from '../components/Tables/TableThree';
 import { AppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';
-import { getBusiness } from '../store/merchatSlice';
+import { deleteBusiness, getBusiness } from '../store/merchatSlice';
 import NotFound from './errorpage/404';
 import { useNavigate } from 'react-router-dom';
+
+import { setOpenDialog } from '../store/appslice';
+import AppDialog from '../components/Dialog';
 
 const Merchant = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +21,19 @@ const Merchant = () => {
       .then((res) => console.log('res', res))
       .catch((err) => console.log(err));
   }, [auth]);
+
+  const handleDelete = (title: string, desc: string) => {
+    dispatch(setOpenDialog({ title, dialogDesc: desc, status: true }));
+  };
+
+  const handleConfirm = () => {
+    if (merchants.selectedId !== 0) {
+      dispatch(
+        deleteBusiness({ token: auth.access_token, id: merchants.selectedId }),
+      );
+    }
+  };
+
   return (
     <div>
       <Breadcrumb pageName="Business List" />
@@ -46,11 +62,15 @@ const Merchant = () => {
       </div>
       <div className="flex flex-col gap-10">
         {merchants?.business?.length > 0 ? (
-          <TableThree business={merchants.business} />
+          <TableThree
+            handleDelete={handleDelete}
+            business={merchants.business}
+          />
         ) : (
           <NotFound title="Business list" />
         )}
       </div>
+      <AppDialog handleConfirm={handleConfirm} />
     </div>
   );
 };

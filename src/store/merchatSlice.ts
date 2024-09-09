@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Business } from '../types/merchant';
+import { setOpenDialog } from './appslice';
 
 type InitialState = {
   business: Array<Business>;
   addBusiness: Record<string, string>;
   createActions: Record<string, string | boolean | undefined>;
+  selectedId: number;
 };
 
 interface Response {
@@ -16,14 +18,14 @@ interface ResponseErr {
   message: string | undefined;
 }
 
-interface GetMerchant {
+interface Merchant {
   id: number;
   token: string;
 }
 
 export const getBusiness = createAsyncThunk<
   Response,
-  GetMerchant,
+  Merchant,
   { rejectValue: ResponseErr }
 >('merchant/getBusiness', async (data, { rejectWithValue }) => {
   const response = await fetch(
@@ -50,7 +52,7 @@ export const getBusiness = createAsyncThunk<
 
 export const createBusiness = createAsyncThunk<
   Response,
-  GetMerchant,
+  Merchant,
   { rejectValue: ResponseErr }
 >('merchant/createBusiness', async (data, { rejectWithValue }) => {
   const response = await fetch(
@@ -74,6 +76,33 @@ export const createBusiness = createAsyncThunk<
   return result as Response;
 });
 
+export const deleteBusiness = createAsyncThunk<
+  Response,
+  Merchant,
+  { rejectValue: ResponseErr }
+>('merchant/deleteBusiness', async (data, { rejectWithValue, dispatch }) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/v1/merchant/delete?id=${data.id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${data.token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return rejectWithValue(errorData as ResponseErr);
+  }
+
+  const result = await response.json();
+  dispatch(setOpenDialog({ title: '', status: false, dialogDesc: '' }));
+  return result as Response;
+});
+
 const initialState: InitialState = {
   business: [],
   addBusiness: {
@@ -85,6 +114,7 @@ const initialState: InitialState = {
     status: '',
     message: '',
   },
+  selectedId: 0,
 };
 
 const merchantSlice = createSlice({
@@ -95,6 +125,10 @@ const merchantSlice = createSlice({
       ...state,
       addBusiness: { ...state.addBusiness, ...action.payload },
     }),
+    setSelectedId: (state, action) => {
+      state.selectedId = action.payload;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -121,5 +155,5 @@ const merchantSlice = createSlice({
   },
 });
 
-export const { setBusiness } = merchantSlice.actions;
+export const { setBusiness, setSelectedId } = merchantSlice.actions;
 export default merchantSlice.reducer;

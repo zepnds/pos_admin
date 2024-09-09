@@ -1,10 +1,19 @@
+import { useAppDispatch } from '../../store';
+import { setSelectedId } from '../../store/merchatSlice';
 import { Business } from '../../types/merchant';
 
 type Props = {
   business: Array<Business>;
+  handleDelete: (title: string, desc: string) => void;
 };
 
-const TableThree = ({ business }: Props) => {
+const TableThree = ({ business, handleDelete }: Props) => {
+  const dispatch = useAppDispatch();
+
+  const handleSelectedId = (id: number) => {
+    dispatch(setSelectedId(id));
+  };
+
   return (
     <div className="rounded-sm border border-stroke">
       <div className="max-w-full overflow-x-auto">
@@ -68,7 +77,16 @@ const TableThree = ({ business }: Props) => {
                         />
                       </svg>
                     </button>
-                    <button className="hover:text-primary">
+                    <button
+                      className="hover:text-primary"
+                      onClick={() => {
+                        handleDelete(
+                          'Delete business',
+                          `Are you sure to delete ${packageItem.name}?`,
+                        ),
+                          handleSelectedId(packageItem.id);
+                      }}
+                    >
                       <svg
                         className="fill-current"
                         width="18"
