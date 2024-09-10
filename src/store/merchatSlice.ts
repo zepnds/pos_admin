@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Business, CBusiness, UBusiness } from '../types/merchant';
-import { setOpenDialog, setStep } from './appslice';
+import { setOpenDialog } from './appslice';
 
 type InitialState = {
   business: Array<Business>;

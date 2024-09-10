@@ -63,7 +63,16 @@ const Merchant = () => {
         <button
           onClick={() => {
             navigate('/dashboard/merchant/business/new'),
-              dispatch(updateForm(false));
+              dispatch(updateForm(false)),
+              dispatch(
+                setBusiness({
+                  title: '',
+                  address: '',
+                  category: '',
+                  email: '',
+                  id: '',
+                }),
+              );
           }}
           className="bg-green-600 hover:bg-green-700 text-white font-bold font-bold py-1 px-1.5 rounded inline-flex items-center  gap-1"
         >
