@@ -1,3 +1,5 @@
+import { useAppSelector } from '../../../store';
+
 interface FormControl {
   onChange: () => void;
   onBlur: () => void;
@@ -12,6 +14,8 @@ export default function SelectInput({
   name,
   options,
 }: FormControl) {
+  const merchant = useAppSelector((state) => state.merchant);
+
   return (
     <div>
       <label
@@ -27,7 +31,10 @@ export default function SelectInput({
         value={value}
         className="capitalize w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
       >
-        <option className="capitalize">Select Options</option>
+        {merchant.update ? null : (
+          <option className="capitalize">Select Options</option>
+        )}
+
         {options.map((i) => (
           <option className="capitalize" key={i.id} value={i.value}>
             {i.value}

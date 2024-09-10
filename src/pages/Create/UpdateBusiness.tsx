@@ -10,13 +10,13 @@ import { Link } from 'react-router-dom';
 const data: Array<{ id: number; title: string; description: string }> = [
   {
     id: 1,
-    title: 'Add Business Details',
-    description: ' Add business name and Details',
+    title: 'Update Business Details',
+    description: ' Update business name and Details',
   },
   {
     id: 2,
-    title: 'Business Category',
-    description: 'Add Business category, Status and etc.',
+    title: 'Update Business Category',
+    description: 'Update Business category, Status and etc.',
   },
 ];
 
@@ -40,9 +40,10 @@ function Form(formRef: ForwardedRef<{ submitForm: () => void }>) {
   }
 }
 
-export default function NewBusiness() {
+export default function UpdateBusiness() {
   const step = useAppSelector((state) => state.app.step);
   const createActions = useAppSelector((state) => state.merchant.createActions);
+  const addBusiness = useAppSelector((state) => state.merchant.addBusiness);
   const formRef = useRef<{ submitForm: () => void }>(null);
   const dispatch = useAppDispatch();
   const handleNext = () => {
@@ -169,7 +170,7 @@ export default function NewBusiness() {
   return (
     <div>
       {Actions(createActions.status as string, createActions.message as string)}
-      <Breadcrumb pageName="New Business" />
+      <Breadcrumb pageName={`Update Business ${addBusiness.title}`} />
       <div className="flex flex-nowrap gap-20">
         <TimeLineDefault data={data} active={step} />
         {Form(formRef)}

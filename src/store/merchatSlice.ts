@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Business } from '../types/merchant';
-import { setOpenDialog } from './appslice';
+import { Business, CBusiness, UBusiness } from '../types/merchant';
+import { setOpenDialog, setStep } from './appslice';
 
 type InitialState = {
   business: Array<Business>;
   addBusiness: Record<string, string>;
   createActions: Record<string, string | boolean | undefined>;
   selectedId: number;
+  update: false;
 };
 
 interface Response {
@@ -52,9 +53,9 @@ export const getBusiness = createAsyncThunk<
 
 export const createBusiness = createAsyncThunk<
   Response,
-  Merchant,
+  CBusiness,
   { rejectValue: ResponseErr }
->('merchant/createBusiness', async (data, { rejectWithValue }) => {
+>('merchant/createBusiness', async (data, { rejectWithValue, dispatch }) => {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URI}/api/v1/merchant/register`,
     {
@@ -73,6 +74,7 @@ export const createBusiness = createAsyncThunk<
   }
 
   const result = await response.json();
+  dispatch(setBusiness({ title: '', address: '', category: '', email: '' }));
   return result as Response;
 });
 
@@ -89,7 +91,6 @@ export const deleteBusiness = createAsyncThunk<
         'Content-Type': 'application/json',
         Authorization: `Bearer ${data.token}`,
       },
-      body: JSON.stringify(data),
     },
   );
 
@@ -100,6 +101,35 @@ export const deleteBusiness = createAsyncThunk<
 
   const result = await response.json();
   dispatch(setOpenDialog({ title: '', status: false, dialogDesc: '' }));
+  return result as Response;
+});
+
+export const updateBusiness = createAsyncThunk<
+  Response,
+  UBusiness,
+  { rejectValue: ResponseErr }
+>('merchant/deleteBusiness', async (data, { rejectWithValue, dispatch }) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/v1/merchant/update?id=${data.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${data.token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return rejectWithValue(errorData as ResponseErr);
+  }
+
+  const result = await response.json();
+  dispatch(setBusiness({ title: '', address: '', category: '', email: '' }));
+  dispatch(updateForm(false));
+
   return result as Response;
 });
 
@@ -114,6 +144,7 @@ const initialState: InitialState = {
     status: '',
     message: '',
   },
+  update: false,
   selectedId: 0,
 };
 
@@ -127,6 +158,15 @@ const merchantSlice = createSlice({
     }),
     setSelectedId: (state, action) => {
       state.selectedId = action.payload;
+      return state;
+    },
+    updateForm: (state, action) => {
+      state.update = action.payload;
+      return state;
+    },
+    resetMessage: (state) => {
+      state.createActions.status = '';
+      state.createActions.message = '';
       return state;
     },
   },
@@ -148,12 +188,27 @@ const merchantSlice = createSlice({
       })
       .addCase(createBusiness.rejected, (state, { payload }) => {
         state.createActions.status = 'error';
-        console.log('payload', payload);
+        state.createActions.message = payload?.message;
+        return state;
+      })
+      .addCase(updateBusiness.fulfilled, (state, { payload }) => {
+        state.business = payload.merchants;
+        state.createActions.status = 'success';
+        state.createActions.message = payload.message;
+        return state;
+      })
+      .addCase(updateBusiness.pending, (state) => {
+        state.createActions.status = 'pending';
+        return state;
+      })
+      .addCase(updateBusiness.rejected, (state, { payload }) => {
+        state.createActions.status = 'error';
         state.createActions.message = payload?.message;
         return state;
       });
   },
 });
 
-export const { setBusiness, setSelectedId } = merchantSlice.actions;
+export const { setBusiness, setSelectedId, updateForm, resetMessage } =
+  merchantSlice.actions;
 export default merchantSlice.reducer;

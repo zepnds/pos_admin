@@ -3,12 +3,19 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import TableThree from '../components/Tables/TableThree';
 import { AppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';
-import { deleteBusiness, getBusiness } from '../store/merchatSlice';
+import {
+  deleteBusiness,
+  getBusiness,
+  resetMessage,
+  setBusiness,
+  updateForm,
+} from '../store/merchatSlice';
 import NotFound from './errorpage/404';
 import { useNavigate } from 'react-router-dom';
 
 import { setOpenDialog } from '../store/appslice';
 import AppDialog from '../components/Dialog';
+import { Business } from '../types/merchant';
 
 const Merchant = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,12 +41,30 @@ const Merchant = () => {
     }
   };
 
+  const handleEdit = (business: Business) => {
+    dispatch(
+      setBusiness({
+        title: business.name,
+        address: business.address,
+        category: business.type,
+        email: business.email,
+        id: business.id,
+      }),
+    );
+    dispatch(resetMessage());
+    dispatch(updateForm(true));
+    navigate('/dashboard/merchant/business/update');
+  };
+
   return (
     <div>
       <Breadcrumb pageName="Business List" />
       <div className="mb-5">
         <button
-          onClick={() => navigate('/dashboard/merchant/business/new')}
+          onClick={() => {
+            navigate('/dashboard/merchant/business/new'),
+              dispatch(updateForm(false));
+          }}
           className="bg-green-600 hover:bg-green-700 text-white font-bold font-bold py-1 px-1.5 rounded inline-flex items-center  gap-1"
         >
           <svg
@@ -65,6 +90,7 @@ const Merchant = () => {
           <TableThree
             handleDelete={handleDelete}
             business={merchants.business}
+            handleEdit={handleEdit}
           />
         ) : (
           <NotFound title="Business list" />

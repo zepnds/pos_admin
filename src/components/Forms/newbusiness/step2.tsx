@@ -3,9 +3,14 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ForwardedRef, useImperativeHandle } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../store';
-import { createBusiness, setBusiness } from '../../../store/merchatSlice';
+import {
+  createBusiness,
+  setBusiness,
+  updateBusiness,
+} from '../../../store/merchatSlice';
 import SelectInput from '../Input/Select';
 import TextInput from '../Input/TextInput';
+
 const businessDetails = yup.object().shape({
   category: yup.string().required('Business category is a required field'),
   email: yup
@@ -43,6 +48,7 @@ export default function BusinessCategoryForm({ reference }: Props) {
   const merchat = useAppSelector((state) => state.merchant);
   const step = useAppSelector((state) => state.app.step);
   const auth = useAppSelector((state) => state.auth);
+
   const { control, handleSubmit } = useForm<IFormInput>({
     defaultValues: {
       category: merchat.addBusiness.category ?? '',
@@ -67,10 +73,14 @@ export default function BusinessCategoryForm({ reference }: Props) {
         merchant_address: merchat.addBusiness.address,
         merchant_type: data.category.toLocaleUpperCase(),
         merchant_email: data.email,
-        id: auth.id,
+        id: merchat.update ? merchat.addBusiness.id : auth.id,
         token: auth.access_token,
       };
-      dispatch(createBusiness(_payload));
+      if (merchat.update) {
+        dispatch(updateBusiness(_payload));
+      } else {
+        dispatch(createBusiness(_payload));
+      }
     }
   };
 
