@@ -13,7 +13,7 @@ import {
 import NotFound from './errorpage/404';
 import { useNavigate } from 'react-router-dom';
 
-import { setOpenDialog } from '../store/appslice';
+import { setOpenDialog, setStep } from '../store/appslice';
 import AppDialog from '../components/Dialog';
 import { Business } from '../types/merchant';
 
@@ -57,56 +57,60 @@ const Merchant = () => {
   };
 
   return (
-    <div>
-      <Breadcrumb pageName="Business List" />
-      <div className="mb-5">
-        <button
-          onClick={() => {
-            navigate('/dashboard/merchant/business/new'),
-              dispatch(updateForm(false)),
-              dispatch(
-                setBusiness({
-                  title: '',
-                  address: '',
-                  category: '',
-                  email: '',
-                  id: '',
-                }),
-              );
-          }}
-          className="bg-green-600 hover:bg-green-700 text-white font-bold font-bold py-1 px-1.5 rounded inline-flex items-center  gap-1"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
+    <>
+      <div>
+        <Breadcrumb pageName="Business List" />
+        <div className="mb-5">
+          <button
+            onClick={() => {
+              navigate('/dashboard/merchant/business/new'),
+                dispatch(updateForm(false)),
+                dispatch(
+                  setBusiness({
+                    title: '',
+                    address: '',
+                    category: '',
+                    email: '',
+                    id: '',
+                  }),
+                ),
+                dispatch(resetMessage());
+              dispatch(setStep(1));
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white font-bold font-bold py-1 px-1.5 rounded inline-flex items-center  gap-1"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
 
-          <span className="capitalize text-sm">create new</span>
-        </button>
-      </div>
-      <div className="flex flex-col gap-10">
-        {merchants?.business?.length > 0 ? (
-          <TableThree
-            handleDelete={handleDelete}
-            business={merchants.business}
-            handleEdit={handleEdit}
-          />
-        ) : (
-          <NotFound title="Business list" />
-        )}
+            <span className="capitalize text-sm">create new</span>
+          </button>
+        </div>
+        <div className="flex flex-col gap-10">
+          {merchants?.business?.length > 0 ? (
+            <TableThree
+              handleDelete={handleDelete}
+              business={merchants.business}
+              handleEdit={handleEdit}
+            />
+          ) : (
+            <NotFound title="Business list" />
+          )}
+        </div>
       </div>
       <AppDialog handleConfirm={handleConfirm} />
-    </div>
+    </>
   );
 };
 

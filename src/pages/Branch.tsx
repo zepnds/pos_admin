@@ -1,12 +1,13 @@
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import TableThree from '../components/Tables/TableThree';
+// import TableThree from '../components/Tables/TableThree';
 
 const Branch = () => {
   return (
     <div>
       <Breadcrumb pageName="Branch List" />
       <div className="flex flex-col gap-10">
-        <TableThree />
+        branch
+        {/* <TableThree /> */}
       </div>
     </div>
   );

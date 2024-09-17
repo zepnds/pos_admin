@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Business, CBusiness, UBusiness } from '../types/merchant';
-import { setOpenDialog } from './appslice';
 
 type InitialState = {
   business: Array<Business>;
@@ -82,7 +81,7 @@ export const deleteBusiness = createAsyncThunk<
   Response,
   Merchant,
   { rejectValue: ResponseErr }
->('merchant/deleteBusiness', async (data, { rejectWithValue, dispatch }) => {
+>('merchant/deleteBusiness', async (data, { rejectWithValue }) => {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URI}/api/v1/merchant/delete?id=${data.id}`,
     {
@@ -100,7 +99,6 @@ export const deleteBusiness = createAsyncThunk<
   }
 
   const result = await response.json();
-  dispatch(setOpenDialog({ title: '', status: false, dialogDesc: '' }));
   return result as Response;
 });
 
@@ -108,7 +106,7 @@ export const updateBusiness = createAsyncThunk<
   Response,
   UBusiness,
   { rejectValue: ResponseErr }
->('merchant/deleteBusiness', async (data, { rejectWithValue, dispatch }) => {
+>('merchant/updateBusiness', async (data, { rejectWithValue, dispatch }) => {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URI}/api/v1/merchant/update?id=${data.id}`,
     {
@@ -202,6 +200,21 @@ const merchantSlice = createSlice({
         return state;
       })
       .addCase(updateBusiness.rejected, (state, { payload }) => {
+        state.createActions.status = 'error';
+        state.createActions.message = payload?.message;
+        return state;
+      })
+      .addCase(deleteBusiness.fulfilled, (state, { payload }) => {
+        state.business = payload.merchants;
+        state.createActions.status = 'success';
+        state.createActions.message = payload.message;
+        return state;
+      })
+      .addCase(deleteBusiness.pending, (state) => {
+        state.createActions.status = 'pending';
+        return state;
+      })
+      .addCase(deleteBusiness.rejected, (state, { payload }) => {
         state.createActions.status = 'error';
         state.createActions.message = payload?.message;
         return state;
