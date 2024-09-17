@@ -6,9 +6,17 @@ type Props = {
   business: Array<Business>;
   handleDelete: (title: string, desc: string) => void;
   handleEdit: (business: Business) => void;
+  title: Array<string>;
+  handleBranch: (id: number) => void;
 };
 
-const TableThree = ({ business, handleDelete, handleEdit }: Props) => {
+const TableBusiness = ({
+  business,
+  handleDelete,
+  handleEdit,
+  title,
+  handleBranch,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const handleSelectedId = (id: number) => {
@@ -21,7 +29,7 @@ const TableThree = ({ business, handleDelete, handleEdit }: Props) => {
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              {['Name', 'Address', 'Type', 'Actions'].map((header) => (
+              {title.map((header) => (
                 <th
                   key={header}
                   className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
@@ -114,6 +122,25 @@ const TableThree = ({ business, handleDelete, handleEdit }: Props) => {
                         />
                       </svg>
                     </button>
+                    <button
+                      className="hover:text-primary"
+                      onClick={() => handleBranch(packageItem.id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -125,4 +152,4 @@ const TableThree = ({ business, handleDelete, handleEdit }: Props) => {
   );
 };
 
-export default TableThree;
+export default TableBusiness;

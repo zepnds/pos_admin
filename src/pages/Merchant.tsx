@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import TableThree from '../components/Tables/TableThree';
 import { AppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';
 import {
@@ -8,6 +7,7 @@ import {
   getBusiness,
   resetMessage,
   setBusiness,
+  resetBusiness,
   updateForm,
 } from '../store/merchatSlice';
 import NotFound from './errorpage/404';
@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { setOpenDialog, setStep } from '../store/appslice';
 import AppDialog from '../components/Dialog';
 import { Business } from '../types/merchant';
+import TableBusiness from '../components/Tables/TableBusiness';
 
 const Merchant = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,7 +38,15 @@ const Merchant = () => {
     if (merchants.selectedId !== 0) {
       dispatch(
         deleteBusiness({ token: auth.access_token, id: merchants.selectedId }),
-      );
+      ).then((res) => {
+        if (res) {
+          const business = merchants.business;
+          const filteredBusiness = business.filter(
+            (item) => item.id !== merchants.selectedId,
+          );
+          dispatch(resetBusiness(filteredBusiness));
+        }
+      });
     }
   };
 
@@ -55,6 +64,12 @@ const Merchant = () => {
     dispatch(updateForm(true));
     navigate('/dashboard/merchant/business/update');
   };
+
+  const handleBranch = (id: number) => {
+    navigate(`/dashboard/merchant/branch?id=${id}`);
+  };
+
+  const title: Array<string> = ['Name', 'Address', 'Type', 'Actions'];
 
   return (
     <>
@@ -99,10 +114,12 @@ const Merchant = () => {
         </div>
         <div className="flex flex-col gap-10">
           {merchants?.business?.length > 0 ? (
-            <TableThree
+            <TableBusiness
               handleDelete={handleDelete}
               business={merchants.business}
               handleEdit={handleEdit}
+              title={title}
+              handleBranch={handleBranch}
             />
           ) : (
             <NotFound title="Business list" />

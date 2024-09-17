@@ -7,6 +7,7 @@ import Branch from './pages/Branch';
 import Products from './pages/Products';
 import NewBusiness from './pages/Create/Business';
 import UpdateBusiness from './pages/Create/UpdateBusiness';
+import AddBranch from './pages/Create/Branch';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
         element: <Merchant />,
       },
       {
-        path: '/dashboard/branch',
+        path: '/dashboard/merchant/branch',
         element: <Branch />,
+      },
+      {
+        path: '/dashboard/merchant/branch/new',
+        element: <AddBranch />,
       },
       {
         path: '/dashboard/products',

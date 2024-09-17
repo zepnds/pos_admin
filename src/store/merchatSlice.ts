@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Business, CBusiness, UBusiness } from '../types/merchant';
+import { Business, CBusiness, IBranch, UBusiness } from '../types/merchant';
+import { setOpenDialog } from './appslice';
 
 type InitialState = {
   business: Array<Business>;
@@ -7,6 +8,8 @@ type InitialState = {
   createActions: Record<string, string | boolean | undefined>;
   selectedId: number;
   update: false;
+  addBranch: Record<string, string>;
+  branches: Array<IBranch>;
 };
 
 interface Response {
@@ -81,7 +84,7 @@ export const deleteBusiness = createAsyncThunk<
   Response,
   Merchant,
   { rejectValue: ResponseErr }
->('merchant/deleteBusiness', async (data, { rejectWithValue }) => {
+>('merchant/deleteBusiness', async (data, { rejectWithValue, dispatch }) => {
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_URI}/api/v1/merchant/delete?id=${data.id}`,
     {
@@ -99,6 +102,7 @@ export const deleteBusiness = createAsyncThunk<
   }
 
   const result = await response.json();
+  dispatch(setOpenDialog({ status: false, title: '', dialogDesc: '' }));
   return result as Response;
 });
 
@@ -131,6 +135,42 @@ export const updateBusiness = createAsyncThunk<
   return result as Response;
 });
 
+type BRequest = {
+  token: string;
+  id: number;
+};
+
+interface GetBranchResponse {
+  branches: Array<IBranch>;
+  message: string;
+  status: string;
+}
+
+export const getBranch = createAsyncThunk<
+  GetBranchResponse,
+  BRequest,
+  { rejectValue: ResponseErr }
+>('merchant/getBranch', async (data, { rejectWithValue }) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/v1/branch/all?id=${data.id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${data.token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return rejectWithValue(errorData as ResponseErr);
+  }
+
+  const result = await response.json();
+  return result as GetBranchResponse;
+});
+
 const initialState: InitialState = {
   business: [],
   addBusiness: {
@@ -144,6 +184,13 @@ const initialState: InitialState = {
   },
   update: false,
   selectedId: 0,
+  addBranch: {
+    company_code: '',
+    branch_address: '',
+    branch_email: '',
+    branch_name: '',
+  },
+  branches: [],
 };
 
 const merchantSlice = createSlice({
@@ -153,6 +200,10 @@ const merchantSlice = createSlice({
     setBusiness: (state, action) => ({
       ...state,
       addBusiness: { ...state.addBusiness, ...action.payload },
+    }),
+    setBranch: (state, action) => ({
+      ...state,
+      addBranch: { ...state.addBranch, ...action.payload },
     }),
     setSelectedId: (state, action) => {
       state.selectedId = action.payload;
@@ -165,6 +216,10 @@ const merchantSlice = createSlice({
     resetMessage: (state) => {
       state.createActions.status = '';
       state.createActions.message = '';
+      return state;
+    },
+    resetBusiness: (state, action) => {
+      state.business = action.payload;
       return state;
     },
   },
@@ -205,7 +260,6 @@ const merchantSlice = createSlice({
         return state;
       })
       .addCase(deleteBusiness.fulfilled, (state, { payload }) => {
-        state.business = payload.merchants;
         state.createActions.status = 'success';
         state.createActions.message = payload.message;
         return state;
@@ -218,10 +272,23 @@ const merchantSlice = createSlice({
         state.createActions.status = 'error';
         state.createActions.message = payload?.message;
         return state;
+      })
+      .addCase(getBranch.fulfilled, (state, { payload }) => {
+        state.createActions.status = 'success';
+        state.createActions.message = payload.message;
+        state.branches = payload.branches;
+        console.log('payload', payload);
+        return state;
       });
   },
 });
 
-export const { setBusiness, setSelectedId, updateForm, resetMessage } =
-  merchantSlice.actions;
+export const {
+  setBusiness,
+  setSelectedId,
+  updateForm,
+  resetMessage,
+  resetBusiness,
+  setBranch,
+} = merchantSlice.actions;
 export default merchantSlice.reducer;

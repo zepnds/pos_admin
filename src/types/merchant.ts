@@ -24,3 +24,11 @@ export type CBusiness = {
   merchant_type: string;
   token: string;
 };
+
+export type IBranch = {
+  branch_name: string;
+  company_code: number;
+  branch_address: string;
+  branch_email: string;
+  id: number;
+};
