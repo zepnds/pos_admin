@@ -48,7 +48,7 @@ export default function BranchContact({ reference }: Props) {
   const onSubmit = (data: IFormInput) => {
     if (step === 2) {
       const _payload = {
-        name: addBranch.name,
+        branch_name: addBranch.name,
         branch_address: addBranch.branch_address,
         company_code: parseInt(id),
         branch_email: data.branch_email,

@@ -26,7 +26,7 @@ export type CBusiness = {
 };
 
 export type CBranch = {
-  name: string;
+  branch_name: string;
   branch_address: string;
   company_code: number;
   branch_email: string;
