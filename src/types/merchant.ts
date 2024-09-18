@@ -48,3 +48,12 @@ export type RBranch = {
   email: string;
   id: number;
 };
+
+export type UBranch = {
+  name: string;
+  company_code: number;
+  branch_address: string;
+  branch_email: string;
+  id: number;
+  token: string;
+};

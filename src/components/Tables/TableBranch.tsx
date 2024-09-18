@@ -3,13 +3,13 @@ import { setSelectedId } from '../../store/merchatSlice';
 import { IBranch } from '../../types/merchant';
 
 type Props = {
-  business: Array<IBranch>;
+  branch: Array<IBranch>;
   handleDelete: (title: string, desc: string) => void;
-  handleEdit: (business: IBranch) => void;
+  handleEdit: (branch: IBranch) => void;
   title: Array<string>;
 };
 
-const TableBranch = ({ business, handleDelete, handleEdit, title }: Props) => {
+const TableBranch = ({ branch, handleDelete, handleEdit, title }: Props) => {
   const dispatch = useAppDispatch();
 
   const handleSelectedId = (id: number) => {
@@ -33,7 +33,7 @@ const TableBranch = ({ business, handleDelete, handleEdit, title }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {business.map((packageItem, key) => (
+            {branch.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark xl:pl-11">
                   <h5 className="font-medium text-black dark:text-white">

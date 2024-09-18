@@ -4,7 +4,14 @@ import TableBranch from '../components/Tables/TableBranch';
 import NotFound from './errorpage/404';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';
-import { getBranch } from '../store/merchatSlice';
+import {
+  getBranch,
+  resetMessage,
+  setBranch,
+  updateForm,
+} from '../store/merchatSlice';
+import { setStep } from '../store/appslice';
+import { IBranch } from '../types/merchant';
 // import TableThree from '../components/Tables/TableThree';
 
 const Branch = () => {
@@ -16,7 +23,21 @@ const Branch = () => {
 
   const navigate = useNavigate();
   const handleDelete = () => {};
-  const handleEdit = () => {};
+  const handleEdit = (branch: IBranch) => {
+    dispatch(
+      setBranch({
+        title: branch.branch_name,
+        address: branch.branch_address,
+        code: branch.company_code,
+        email: branch.branch_email,
+        id: branch.id,
+      }),
+    );
+    dispatch(resetMessage());
+    dispatch(updateForm(true));
+    navigate(`/dashboard/merchant/branch/update?id=${branch.id}`);
+    dispatch(setStep(1));
+  };
   const title: Array<string> = [
     'Name',
     'Company Code',
@@ -37,18 +58,17 @@ const Branch = () => {
         <button
           onClick={() => {
             navigate(`/dashboard/merchant/branch/new?id=${id}`);
-            //   dispatch(updateForm(false)),
-            //   dispatch(
-            //     setBusiness({
-            //       title: '',
-            //       address: '',
-            //       category: '',
-            //       email: '',
-            //       id: '',
-            //     }),
-            //   ),
-            //   dispatch(resetMessage());
-            // dispatch(setStep(1));
+            dispatch(updateForm(false)),
+              dispatch(
+                setBranch({
+                  title: '',
+                  address: '',
+                  email: '',
+                  name: '',
+                }),
+              ),
+              dispatch(resetMessage());
+            dispatch(setStep(1));
           }}
           className="bg-green-600 hover:bg-green-700 text-white font-bold font-bold py-1 px-1.5 rounded inline-flex items-center  gap-1"
         >
@@ -74,7 +94,7 @@ const Branch = () => {
         {branchlist?.length > 0 ? (
           <TableBranch
             handleDelete={handleDelete}
-            business={branchlist.map((item) => {
+            branch={branchlist.map((item) => {
               return {
                 ...item,
                 branch_name: item.name,
@@ -87,7 +107,7 @@ const Branch = () => {
             title={title}
           />
         ) : (
-          <NotFound title="Business list" />
+          <NotFound title="Branch list" />
         )}
       </div>
     </div>

@@ -5,9 +5,10 @@ import BranchDetails from '../../components/Forms/newbranch/step1';
 import BranchContact from '../../components/Forms/newbranch/step2';
 import { setStep } from '../../store/appslice';
 import TimeLineDefault from '../../components/timeline/default';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { updateForm } from '../../store/merchatSlice';
 
-const data: Array<{ id: number; title: string; description: string }> = [
+const createData: Array<{ id: number; title: string; description: string }> = [
   {
     id: 1,
     title: 'Basic Details',
@@ -17,6 +18,19 @@ const data: Array<{ id: number; title: string; description: string }> = [
     id: 2,
     title: 'Contact Details',
     description: 'Add Branch description',
+  },
+];
+
+const updateData: Array<{ id: number; title: string; description: string }> = [
+  {
+    id: 1,
+    title: 'Basic Details',
+    description: ' Update Branch name and Details',
+  },
+  {
+    id: 2,
+    title: 'Contact Details',
+    description: 'Update Branch description',
   },
 ];
 
@@ -43,6 +57,8 @@ function Form(formRef: ForwardedRef<{ submitForm: () => void }>) {
 export default function AddBranch() {
   const { search } = useLocation();
   const id = search.split('id=')[1];
+  const update = useAppSelector((state) => state.merchant.update);
+  const addBranch = useAppSelector((state) => state.merchant.addBranch);
   const step = useAppSelector((state) => state.app.step);
   const createActions = useAppSelector((state) => state.merchant.createActions);
   const formRef = useRef<{ submitForm: () => void }>(null);
@@ -51,9 +67,15 @@ export default function AddBranch() {
     formRef.current?.submitForm();
   };
 
+  const navigate = useNavigate();
   const handlePrevious = () => {
     if (step === 1) return;
     dispatch(setStep(step - 1));
+  };
+
+  const handleSuccess = () => {
+    dispatch(updateForm(false));
+    navigate(`/dashboard/merchant/branch?id=${id}`);
   };
 
   function Actions(status: string, message: string) {
@@ -112,12 +134,12 @@ export default function AddBranch() {
                   <div className="text-sm text-green-600">
                     <p>
                       {message}.{'  '}
-                      <Link
-                        className="font-bold text-black underline"
-                        to={`/dashboard/merchant/branch?id=${id}`}
+                      <span
+                        className="font-bold text-black underline cursor-pointer"
+                        onClick={handleSuccess}
                       >
                         check now
-                      </Link>
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -171,9 +193,14 @@ export default function AddBranch() {
   return (
     <div>
       {Actions(createActions.status as string, createActions.message as string)}
-      <Breadcrumb pageName="New Branch" />
+      <Breadcrumb
+        pageName={update ? `Update Branch ${addBranch.title}` : 'New Branch'}
+      />
       <div className="flex flex-nowrap gap-20">
-        <TimeLineDefault data={data} active={step} />
+        <TimeLineDefault
+          data={update ? updateData : createData}
+          active={step}
+        />
         {Form(formRef)}
       </div>
       <div className="flex gap-5">

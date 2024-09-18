@@ -25,8 +25,8 @@ export default function BranchDetails({ reference }: Props) {
   const addBranch = useAppSelector((state) => state.merchant.addBranch);
   const { control, handleSubmit } = useForm<IFormInput>({
     defaultValues: {
-      name: addBranch.name ?? '',
-      branch_address: addBranch.branch_address ?? '',
+      name: addBranch.title ?? '',
+      branch_address: addBranch.address ?? '',
     },
     resolver: yupResolver(branchSchema),
   });

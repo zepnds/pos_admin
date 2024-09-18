@@ -4,6 +4,7 @@ import {
   CBranch,
   CBusiness,
   RBranch,
+  UBranch,
   UBusiness,
 } from '../types/merchant';
 import { setOpenDialog } from './appslice';
@@ -137,6 +138,33 @@ export const updateBusiness = createAsyncThunk<
   const result = await response.json();
   dispatch(setBusiness({ title: '', address: '', category: '', email: '' }));
   dispatch(updateForm(false));
+
+  return result as Response;
+});
+
+export const updateBranch = createAsyncThunk<
+  Response,
+  UBranch,
+  { rejectValue: ResponseErr }
+>('merchant/updateBranch', async (data, { rejectWithValue }) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/v1/branch/update?id=${data.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${data.token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return rejectWithValue(errorData as ResponseErr);
+  }
+
+  const result = await response.json();
 
   return result as Response;
 });
@@ -330,6 +358,21 @@ const merchantSlice = createSlice({
         return state;
       })
       .addCase(createBranch.rejected, (state, { payload }) => {
+        state.createActions.status = 'error';
+        state.createActions.message = payload?.message;
+        return state;
+      })
+      .addCase(updateBranch.fulfilled, (state, { payload }) => {
+        state.business = payload.merchants;
+        state.createActions.status = 'success';
+        state.createActions.message = payload.message;
+        return state;
+      })
+      .addCase(updateBranch.pending, (state) => {
+        state.createActions.status = 'pending';
+        return state;
+      })
+      .addCase(updateBranch.rejected, (state, { payload }) => {
         state.createActions.status = 'error';
         state.createActions.message = payload?.message;
         return state;

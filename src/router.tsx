@@ -31,6 +31,10 @@ const router = createBrowserRouter([
         element: <AddBranch />,
       },
       {
+        path: '/dashboard/merchant/branch/update',
+        element: <AddBranch />,
+      },
+      {
         path: '/dashboard/products',
         element: <Products />,
       },
@@ -38,6 +42,7 @@ const router = createBrowserRouter([
         path: '/dashboard/merchant/business/new',
         element: <NewBusiness />,
       },
+
       {
         path: '/dashboard/merchant/business/update',
         element: <UpdateBusiness />,
