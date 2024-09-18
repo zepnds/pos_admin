@@ -50,7 +50,7 @@ export type RBranch = {
 };
 
 export type UBranch = {
-  name: string;
+  branch_name: string;
   company_code: number;
   branch_address: string;
   branch_email: string;

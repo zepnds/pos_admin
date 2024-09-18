@@ -57,14 +57,14 @@ export default function BranchContact({ reference }: Props) {
 
       if (update) {
         const _payloadu = {
-          name: addBranch.name,
+          branch_name: addBranch.name,
           branch_address: addBranch.branch_address,
           company_code: parseInt(id),
           branch_email: data.branch_email,
           token: auth.access_token,
           id: parseInt(id),
         };
-        console.log('_payloadu', _payloadu);
+
         dispatch(updateBranch(_payloadu));
       } else {
         dispatch(createBranch(_payload));
