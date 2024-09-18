@@ -1,5 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Business, CBusiness, IBranch, UBusiness } from '../types/merchant';
+import {
+  Business,
+  CBranch,
+  CBusiness,
+  RBranch,
+  UBusiness,
+} from '../types/merchant';
 import { setOpenDialog } from './appslice';
 
 type InitialState = {
@@ -9,7 +15,7 @@ type InitialState = {
   selectedId: number;
   update: false;
   addBranch: Record<string, string>;
-  branches: Array<IBranch>;
+  branches: Array<RBranch>;
 };
 
 interface Response {
@@ -141,7 +147,7 @@ type BRequest = {
 };
 
 interface GetBranchResponse {
-  branches: Array<IBranch>;
+  branches: Array<RBranch>;
   message: string;
   status: string;
 }
@@ -169,6 +175,39 @@ export const getBranch = createAsyncThunk<
 
   const result = await response.json();
   return result as GetBranchResponse;
+});
+
+interface PostBranchResponse {
+  branches: Array<RBranch>;
+  message: string;
+  status: string;
+}
+
+export const createBranch = createAsyncThunk<
+  PostBranchResponse,
+  CBranch,
+  { rejectValue: ResponseErr }
+>('merchant/createBranch', async (data, { rejectWithValue, dispatch }) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/v1/branch/register`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${data.token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return rejectWithValue(errorData as ResponseErr);
+  }
+
+  const result = await response.json();
+  dispatch(setBranch({ name: '', branch_address: '', branch_email: '' }));
+  return result as PostBranchResponse;
 });
 
 const initialState: InitialState = {
@@ -278,6 +317,21 @@ const merchantSlice = createSlice({
         state.createActions.message = payload.message;
         state.branches = payload.branches;
         console.log('payload', payload);
+        return state;
+      })
+      .addCase(createBranch.fulfilled, (state, { payload }) => {
+        state.branches = payload.branches;
+        state.createActions.status = 'success';
+        state.createActions.message = payload.message;
+        return state;
+      })
+      .addCase(createBranch.pending, (state) => {
+        state.createActions.status = 'pending';
+        return state;
+      })
+      .addCase(createBranch.rejected, (state, { payload }) => {
+        state.createActions.status = 'error';
+        state.createActions.message = payload?.message;
         return state;
       });
   },

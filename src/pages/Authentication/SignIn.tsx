@@ -190,7 +190,7 @@ const SignIn: React.FC = () => {
         </div>
 
         <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-          <div className="w-full p-10 sm:p-12.5 xl:p-40">
+          <div className="w-full p-10 sm:p-12.5 xl:p-10">
             <span className="mb-1.5 block font-medium">
               Start for 1 month free
             </span>

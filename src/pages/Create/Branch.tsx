@@ -1,112 +1,196 @@
-import { useForm, Controller } from 'react-hook-form';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useAppSelector } from '../../store';
-import TextInput from '../../components/Forms/Input/TextInput';
-type IFormInput = {
-  branch_address: string;
-  branch_email: string;
-  branch_name: string;
-};
+import { useAppDispatch, useAppSelector } from '../../store';
+import { ForwardedRef, useRef } from 'react';
+import BranchDetails from '../../components/Forms/newbranch/step1';
+import BranchContact from '../../components/Forms/newbranch/step2';
+import { setStep } from '../../store/appslice';
+import TimeLineDefault from '../../components/timeline/default';
+import { Link, useLocation } from 'react-router-dom';
 
-const branchDetails = yup.object().shape({
-  branch_email: yup.string().required('Branch details is a required field'),
-  branch_address: yup.string().required('Branch address is a required field'),
-  branch_name: yup.string().required('Branch name is a required field'),
-});
+const data: Array<{ id: number; title: string; description: string }> = [
+  {
+    id: 1,
+    title: 'Basic Details',
+    description: ' Add Branch name and Details',
+  },
+  {
+    id: 2,
+    title: 'Contact Details',
+    description: 'Add Branch description',
+  },
+];
+
+function Form(formRef: ForwardedRef<{ submitForm: () => void }>) {
+  const step = useAppSelector((state) => state.app.step);
+
+  switch (step) {
+    case 1: {
+      return (
+        <div className="w-full">
+          <BranchDetails reference={formRef} />
+        </div>
+      );
+    }
+    case 2:
+      return (
+        <div className="w-full">
+          <BranchContact reference={formRef} />
+        </div>
+      );
+  }
+}
 
 export default function AddBranch() {
-  const addBranch = useAppSelector((state) => state.merchant.addBranch);
-  const { control, handleSubmit } = useForm<IFormInput>({
-    defaultValues: {
-      branch_email: addBranch.branch_email ?? '',
-      branch_address: addBranch.branch_address ?? '',
-      branch_name: addBranch.branch_name ?? '',
-    },
-    resolver: yupResolver(branchDetails),
-  });
+  const { search } = useLocation();
+  const id = search.split('id=')[1];
+  const step = useAppSelector((state) => state.app.step);
+  const createActions = useAppSelector((state) => state.merchant.createActions);
+  const formRef = useRef<{ submitForm: () => void }>(null);
+  const dispatch = useAppDispatch();
+  const handleNext = () => {
+    formRef.current?.submitForm();
+  };
 
-  const onSubmit = () => {};
+  const handlePrevious = () => {
+    if (step === 1) return;
+    dispatch(setStep(step - 1));
+  };
+
+  function Actions(status: string, message: string) {
+    switch (status) {
+      case 'pending':
+        return (
+          <div className="relative w-full mb-5">
+            <div className="p-3 border-l-4 border-gray-500 -6 rounded-r-xl bg-gray-50">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="size-6 text-gray-600 animate-spin"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <div className="text-sm text-gray-600">
+                    <p>Processing your request please wait</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'success':
+        return (
+          <div className="relative w-full mb-5">
+            <div className="p-3 border-l-4 border-green-500 -6 rounded-r-xl bg-green-50">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="w-5 h-5 text-green-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <div className="text-sm text-green-600">
+                    <p>
+                      {message}.{'  '}
+                      <Link
+                        className="font-bold text-black underline"
+                        to={`/dashboard/merchant/branch?id=${id}`}
+                      >
+                        check now
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'error':
+        return (
+          <div className="relative w-full mb-5">
+            <div className="p-3 border-l-4 border-red-500 -6 rounded-r-xl bg-red-50">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6 text-red-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <div className="text-sm text-red-600">
+                    <p>
+                      {message}.{' '}
+                      <Link
+                        className="font-bold text-red-600 underline"
+                        to={`/dashboard/merchant/branch?id=${id}`}
+                      >
+                        go back
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  }
 
   return (
     <div>
-      <Breadcrumb pageName="Add Branch" />
-      <div className="bg-white p-10 rounded-2xl">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Controller
-            name="branch_name"
-            control={control}
-            render={({
-              field: { onChange, onBlur, value },
-              formState: { errors },
-            }) => (
-              <>
-                <TextInput
-                  name="Branch Name"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-                {errors?.branch_name && (
-                  <span className="text-red-800 block text-sm font-medium leading-6 text-gray-900 mb-2.5">
-                    {errors.branch_name.message}
-                  </span>
-                )}
-              </>
-            )}
-          />
-          <Controller
-            name="branch_email"
-            control={control}
-            render={({
-              field: { onChange, onBlur, value },
-              formState: { errors },
-            }) => (
-              <>
-                <TextInput
-                  name="Branch Email"
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-                {errors?.branch_name && (
-                  <span className="text-red-800 block text-sm font-medium leading-6 text-gray-900 mb-2.5">
-                    {errors.branch_name.message}
-                  </span>
-                )}
-              </>
-            )}
-          />
-          <Controller
-            name="branch_address"
-            control={control}
-            render={({
-              field: { onChange, onBlur, value },
-              formState: { errors },
-            }) => (
-              <div>
-                <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Branch Address
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    rows={3}
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-                {errors?.branch_address && (
-                  <span className="text-red-800 block text-sm font-medium leading-6 text-gray-900 mb-2.5">
-                    {errors.branch_address.message}
-                  </span>
-                )}
-              </div>
-            )}
-          />
-        </form>
+      {Actions(createActions.status as string, createActions.message as string)}
+      <Breadcrumb pageName="New Branch" />
+      <div className="flex flex-nowrap gap-20">
+        <TimeLineDefault data={data} active={step} />
+        {Form(formRef)}
+      </div>
+      <div className="flex gap-5">
+        <button
+          onClick={handlePrevious}
+          type="submit"
+          className="flex w-30 mt-5 justify-center rounded-md bg-sky-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNext}
+          type="submit"
+          className="flex w-30 mt-5 justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

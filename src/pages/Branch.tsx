@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import TableBranch from '../components/Tables/TableBranch';
-import { IBranch } from '../types/merchant';
 import NotFound from './errorpage/404';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useEffect } from 'react';
@@ -10,6 +9,7 @@ import { getBranch } from '../store/merchatSlice';
 
 const Branch = () => {
   const auth = useAppSelector((state) => state.auth);
+  const branchlist = useAppSelector((state) => state.merchant.branches);
   const dispatch = useAppDispatch();
   const { search } = useLocation();
   const id = search.split('id=')[1];
@@ -22,15 +22,6 @@ const Branch = () => {
     'Company Code',
     'Email Address',
     'Actions',
-  ];
-  const branch: Array<IBranch> = [
-    {
-      id: 1,
-      branch_name: 'Camiling Branch',
-      branch_address: 'Camiling Tarlac',
-      branch_email: 'sojda018@gmail.com',
-      company_code: 10,
-    },
   ];
 
   useEffect(() => {
@@ -45,7 +36,7 @@ const Branch = () => {
       <div className="mb-5">
         <button
           onClick={() => {
-            navigate('/dashboard/merchant/branch/new');
+            navigate(`/dashboard/merchant/branch/new?id=${id}`);
             //   dispatch(updateForm(false)),
             //   dispatch(
             //     setBusiness({
@@ -80,10 +71,18 @@ const Branch = () => {
         </button>
       </div>
       <div className="flex flex-col gap-10">
-        {branch.length > 0 ? (
+        {branchlist?.length > 0 ? (
           <TableBranch
             handleDelete={handleDelete}
-            business={branch}
+            business={branchlist.map((item) => {
+              return {
+                ...item,
+                branch_name: item.name,
+                company_code: item.code,
+                branch_address: item.address,
+                branch_email: item.email,
+              };
+            })}
             handleEdit={handleEdit}
             title={title}
           />

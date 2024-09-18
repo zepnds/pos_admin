@@ -25,10 +25,26 @@ export type CBusiness = {
   token: string;
 };
 
+export type CBranch = {
+  name: string;
+  branch_address: string;
+  company_code: number;
+  branch_email: string;
+  token: string;
+};
+
 export type IBranch = {
   branch_name: string;
   company_code: number;
   branch_address: string;
   branch_email: string;
+  id: number;
+};
+
+export type RBranch = {
+  name: string;
+  code: number;
+  address: string;
+  email: string;
   id: number;
 };
