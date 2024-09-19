@@ -113,6 +113,32 @@ export const deleteBusiness = createAsyncThunk<
   return result as Response;
 });
 
+export const deleteBranch = createAsyncThunk<
+  Response,
+  Merchant,
+  { rejectValue: ResponseErr }
+>('merchant/deleteBranch', async (data, { rejectWithValue, dispatch }) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_URI}/api/v1/branch/delete?id=${data.id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${data.token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    return rejectWithValue(errorData as ResponseErr);
+  }
+
+  const result = await response.json();
+  dispatch(setOpenDialog({ status: false, title: '', dialogDesc: '' }));
+  return result as Response;
+});
+
 export const updateBusiness = createAsyncThunk<
   Response,
   UBusiness,
@@ -289,6 +315,10 @@ const merchantSlice = createSlice({
       state.business = action.payload;
       return state;
     },
+    resetBranch: (state, action) => {
+      state.branches = action.payload;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -340,6 +370,20 @@ const merchantSlice = createSlice({
         state.createActions.message = payload?.message;
         return state;
       })
+      .addCase(deleteBranch.fulfilled, (state, { payload }) => {
+        state.createActions.status = 'success';
+        state.createActions.message = payload.message;
+        return state;
+      })
+      .addCase(deleteBranch.pending, (state) => {
+        state.createActions.status = 'pending';
+        return state;
+      })
+      .addCase(deleteBranch.rejected, (state, { payload }) => {
+        state.createActions.status = 'error';
+        state.createActions.message = payload?.message;
+        return state;
+      })
       .addCase(getBranch.fulfilled, (state, { payload }) => {
         state.createActions.status = 'success';
         state.createActions.message = payload.message;
@@ -387,5 +431,6 @@ export const {
   resetMessage,
   resetBusiness,
   setBranch,
+  resetBranch,
 } = merchantSlice.actions;
 export default merchantSlice.reducer;

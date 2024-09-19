@@ -56,7 +56,7 @@ const TableBranch = ({ branch, handleDelete, handleEdit, title }: Props) => {
                       className="hover:text-primary"
                       onClick={() => {
                         handleDelete(
-                          'Delete business',
+                          'Delete Branch',
                           `Are you sure to delete ${packageItem.branch_name}?`,
                         ),
                           handleSelectedId(packageItem.id);
