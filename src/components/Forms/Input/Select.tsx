@@ -2,7 +2,7 @@ import { useAppSelector } from '../../../store';
 
 interface FormControl {
   onChange: () => void;
-  onBlur: () => void;
+  onBlur?: () => void;
   value: string;
   name: string;
   options: Array<Record<string, number | string>>;

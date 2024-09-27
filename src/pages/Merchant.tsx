@@ -65,10 +65,6 @@ const Merchant = () => {
     navigate('/dashboard/merchant/business/update');
   };
 
-  const handleBranch = (id: number) => {
-    navigate(`/dashboard/merchant/branch?id=${id}`);
-  };
-
   const title: Array<string> = ['Name', 'Address', 'Type', 'Actions'];
 
   return (
@@ -119,7 +115,6 @@ const Merchant = () => {
               business={merchants.business}
               handleEdit={handleEdit}
               title={title}
-              handleBranch={handleBranch}
             />
           ) : (
             <NotFound title="Business list" />

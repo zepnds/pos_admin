@@ -9,10 +9,16 @@ import {
 } from '../types/merchant';
 import { setOpenDialog } from './appslice';
 
+type SelectedItem = {
+  id: number;
+  default: boolean;
+};
+
 type InitialState = {
   business: Array<Business>;
   addBusiness: Record<string, string>;
   createActions: Record<string, string | boolean | undefined>;
+  selectedItem: SelectedItem;
   selectedId: number;
   update: false;
   addBranch: Record<string, string>;
@@ -276,6 +282,7 @@ const initialState: InitialState = {
     message: '',
   },
   update: false,
+  selectedItem: { id: 0, default: false },
   selectedId: 0,
   addBranch: {
     company_code: '',
@@ -298,6 +305,10 @@ const merchantSlice = createSlice({
       ...state,
       addBranch: { ...state.addBranch, ...action.payload },
     }),
+    setSelectedItem: (state, action) => {
+      state.selectedItem = action.payload;
+      return state;
+    },
     setSelectedId: (state, action) => {
       state.selectedId = action.payload;
       return state;
@@ -426,11 +437,12 @@ const merchantSlice = createSlice({
 
 export const {
   setBusiness,
-  setSelectedId,
+  setSelectedItem,
   updateForm,
   resetMessage,
   resetBusiness,
   setBranch,
+  setSelectedId,
   resetBranch,
 } = merchantSlice.actions;
 export default merchantSlice.reducer;
