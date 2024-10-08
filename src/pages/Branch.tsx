@@ -43,12 +43,7 @@ const Branch = () => {
     navigate(`/dashboard/merchant/branch/update?id=${branch.id}`);
     dispatch(setStep(1));
   };
-  const title: Array<string> = [
-    'Name',
-    'Company Code',
-    'Email Address',
-    'Actions',
-  ];
+  const title: Array<string> = ['Name', 'Address', 'Email Address', 'Actions'];
 
   const handleConfirm = () => {
     if (merchant.selectedItem.id !== 0) {
@@ -147,10 +142,11 @@ const Branch = () => {
             {merchant.business.map((i) => (
               <option
                 className="capitalize"
+                data-tooltip-target="tooltip"
                 key={i.id}
                 value={JSON.stringify({ id: i.id, default: false })}
               >
-                {i.name}
+                BC-{i.id}
               </option>
             ))}
           </select>

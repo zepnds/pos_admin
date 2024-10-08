@@ -8,6 +8,7 @@ import Products from './pages/Products';
 import NewBusiness from './pages/Create/Business';
 import UpdateBusiness from './pages/Create/UpdateBusiness';
 import AddBranch from './pages/Create/Branch';
+import CreateProduct from './pages/Create/Product';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: '/dashboard/merchant/business/update',
         element: <UpdateBusiness />,
+      },
+      {
+        path: '/dashboard/merchant/branch/product/new',
+        element: <CreateProduct />,
       },
     ],
   },

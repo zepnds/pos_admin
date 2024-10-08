@@ -282,7 +282,7 @@ const initialState: InitialState = {
     message: '',
   },
   update: false,
-  selectedItem: { id: 0, default: false },
+  selectedItem: { id: 0, default: true },
   selectedId: 0,
   addBranch: {
     company_code: '',

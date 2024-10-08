@@ -42,7 +42,7 @@ const TableBranch = ({ branch, handleDelete, handleEdit, title }: Props) => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    BC-{packageItem.company_code}
+                    {packageItem.branch_address}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
